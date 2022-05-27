@@ -14,13 +14,41 @@ def main():
     # mime_clip.export()
 
     # Hash testing
+
+    # audio_01 = AudioSegment.from_mp3('tests/hash_01.mp3')
+    # audio_02 = AudioSegment.from_mp3('tests/hash_02.mp3')
+    # audio_03 = AudioSegment.from_mp3('tests/hash_03_diff.mp3')
+    # print(hash(audio_01))
+    # print(hash(audio_02))
+    # print(hash(audio_03))
+
+    # Fragment class
+    text = 'I accidentaly cut my fingers when I put the knifes in the dishwasher last night'
+    frag = Fragment.from_mp3('tests/hash_01.mp3', text)
+    print(frag.path)
+    print(frag.duration)
+    print(frag.text)
+
+
+class Fragment:
+    def __init__(self, path=None, audio=None, text=None) -> None:
+        '''
+        An entity with embbed audio, text and metadata.
+        It should be instantiaed with a from_* method, never directly.
+        '''
+        self.audio = audio
+        self.path = path
+        self.duration = None
+        self.hash_signature = None
+        self.text = text
+        self.duration = len(self.audio)
+        self.hash_signature = hash(self.audio)
     
-    audio_01 = AudioSegment.from_mp3('tests/hash_01.mp3')
-    audio_02 = AudioSegment.from_mp3('tests/hash_02.mp3')
-    audio_03 = AudioSegment.from_mp3('tests/hash_03_diff.mp3')
-    print(hash(audio_01))
-    print(hash(audio_02))
-    print(hash(audio_03))
+    @classmethod
+    def from_mp3(self, path, text):
+        audio = AudioSegment.from_mp3(path)
+        return Fragment(path=path, audio=audio, text=text)
+
 
 
 class FragmentCollection:
